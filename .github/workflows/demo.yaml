@@ -18,7 +18,9 @@ jobs:
 
     - name: Show the container is running then stop and remove
       run: |
+        echo "Showing the container is running"
         podman ps -a
+        echo "Stop and remove the running container"
         podman stop nginx
         podman rm nginx
 
@@ -30,25 +32,31 @@ jobs:
 
     - name: Show the container is not running then remove
       run: |
+        echo "Showing the container is NOT running"
         podman ps -a
+        echo "Remove the container"
         podman rm deb10
 
     - name: Demonstrate the problematic container runs using docker
       run: |
+        echo "Exporting container image to Docker"
         podman push localhost/debian-10-systemd:latest docker-daemon:localhost/debian-10-systemd:latest
+        echo "Running the container with Docker"
         docker run -d --name deb10 localhost/debian-10-systemd
+        echo "Showing the container is running with Docker"
         docker ps -a
+        echo "Stop and remove the running container"
         docker stop deb10
         docker rm deb10
 
     - name: Output debug info
       run: |
         echo "Output of podman version:"
-        run podman version
+        podman version
         echo ""
         echo "Output of podman info:"
-        run podman info
+        podman info
         echo ""
         echo "Output of buildah version"
-        run buildah version
+        buildah version
         echo ""
