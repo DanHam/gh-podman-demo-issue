@@ -18,45 +18,54 @@ jobs:
 
     - name: Show the container is running then stop and remove
       run: |
-        echo "Showing the container is running"
+        echo ""
+        echo "*** Show the container is running"
         podman ps -a
-        echo "Stop and remove the running container"
+        echo ""
+        echo "*** Stop and remove the running container"
         podman stop nginx
         podman rm nginx
 
     - name: Build our problematic container
       run: /bin/bash build.sh
 
-    - name: Try and run our problematic container
+    - name: Try and run our problematic container with podman
       run: podman run --log-level=debug -d --name deb10 localhost/debian-10-systemd
 
     - name: Show the container is not running then remove
       run: |
-        echo "Showing the container is NOT running"
+        echo ""
+        echo "*** Show the container is NOT running"
         podman ps -a
-        echo "Remove the container"
+        echo ""
+        echo "*** Remove the container"
         podman rm deb10
 
     - name: Demonstrate the problematic container runs using docker
       run: |
-        echo "Exporting container image to Docker"
+        echo ""
+        echo "*** Exporting container image to Docker"
         podman push localhost/debian-10-systemd:latest docker-daemon:localhost/debian-10-systemd:latest
-        echo "Running the container with Docker"
+        echo ""
+        echo "*** Running the container with Docker"
         docker run -d --name deb10 localhost/debian-10-systemd
-        echo "Showing the container is running with Docker"
+        echo ""
+        echo "*** Showing the container is running with Docker"
         docker ps -a
-        echo "Stop and remove the running container"
+        echo ""
+        echo "*** Stop and remove the running container"
         docker stop deb10
         docker rm deb10
 
     - name: Output debug info
       run: |
-        echo "Output of podman version:"
+        echo ""
+        echo "*** Output of podman version:"
         podman version
         echo ""
-        echo "Output of podman info:"
+        echo "*** Output of podman info:"
         podman info
         echo ""
-        echo "Output of buildah version"
+        echo "*** Output of buildah version"
         buildah version
         echo ""
