@@ -1,0 +1,54 @@
+---
+name: Demo issue
+
+on:
+  workflow_dispatch:
+
+jobs:
+  demo:
+    name: Build and run
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+
+    - name: Run a container (successfully) with podman
+      run: podman run --log-level=debug -d --name nginx docker.io/nginx:alpine
+
+    - name: Show the container is running then stop and remove
+      run: |
+        podman ps -a
+        podman stop nginx
+        podman rm nginx
+
+    - name: Build our problematic container
+      run: /bin/bash build.sh
+
+    - name: Try and run our problematic container
+      run: podman run --log-level=debug -d --name deb10 localhost/debian-10-systemd
+
+    - name: Show the container is not running then remove
+      run: |
+        podman ps -a
+        podman rm deb10
+
+    - name: Demonstrate the problematic container runs using docker
+      run: |
+        podman push localhost/debian-10-systemd:latest docker-daemon:localhost/debian-10-systemd:latest
+        docker run -d --name deb10 localhost/debian-10-systemd
+        docker ps -a
+        docker stop deb10
+        docker rm deb10
+
+    - name: Output debug info
+      run: |
+        echo "Output of podman version:"
+        run podman version
+        echo ""
+        echo "Output of podman info:"
+        run podman info
+        echo ""
+        echo "Output of buildah version"
+        run buildah version
+        echo ""
