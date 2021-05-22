@@ -41,6 +41,22 @@ jobs:
         echo "*** Remove the container"
         podman rm deb10
 
+    - name: Show we can run the container using 'sudo podman'
+      run: |
+        echo ""
+        echo "*** Build the image using 'sudo buildah'"
+        sudo /bin/bash build.sh
+        echo ""
+        echo "*** Run the container"
+        sudo podman run --log-level=debug -d --name deb10 localhost/debian-10-systemd
+        echo ""
+        echo "*** Show the container is running"
+        sudo podman ps -a
+        echo ""
+        echo "*** Stop and remove the running container"
+        sudo podman stop deb10
+        sudo podman rm deb10
+
     - name: Demonstrate the problematic container runs using docker
       run: |
         echo ""
@@ -50,7 +66,7 @@ jobs:
         echo "*** Running the container with Docker"
         docker run -d --name deb10 localhost/debian-10-systemd
         echo ""
-        echo "*** Showing the container is running with Docker"
+        echo "*** Show the container is running with Docker"
         docker ps -a
         echo ""
         echo "*** Stop and remove the running container"
@@ -60,12 +76,12 @@ jobs:
     - name: Output debug info
       run: |
         echo ""
-        echo "*** Output of podman version:"
+        echo "*** Output of 'podman version':"
         podman version
         echo ""
-        echo "*** Output of podman info:"
+        echo "*** Output of 'podman info':"
         podman info
         echo ""
-        echo "*** Output of buildah version"
+        echo "*** Output of 'buildah version'"
         buildah version
         echo ""
