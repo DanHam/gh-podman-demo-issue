@@ -79,8 +79,11 @@ jobs:
         echo "*** Output of 'podman version':"
         podman version
         echo ""
-        echo "*** Output of 'podman info':"
-        podman info
+        echo "*** Output of 'podman info --debug':"
+        podman info --debug
+        echo ""
+        echo "*** Output of 'apt list podman'"
+        apt list podman
         echo ""
         echo "*** Output of 'buildah version'"
         buildah version
