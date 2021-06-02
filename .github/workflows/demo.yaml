@@ -29,14 +29,23 @@ jobs:
     - name: Build our problematic container
       run: /bin/bash build.sh
 
-    - name: Try and run our problematic container with podman
-      run: podman run --log-level=debug -d --name deb10 localhost/debian-10-systemd
+    - name: Ensure dbus-launch is available (install dbus-x11)
+      run: sudo apt install -y --no-install-recommends dbus-x11
 
-    - name: Show the container is not running then remove
+    - name: Try and run our problematic container with podman
+      run: podman run --log-level=debug --cgroup-manager=cgroupfs -d --name deb10 localhost/debian-10-systemd
+
+    - name: Show the container is not running then remove. Display debug info
       run: |
         echo ""
-        echo "*** Show the container is NOT running"
+        echo "*** Show the container is NOT running - output of podman ps"
         podman ps -a
+        echo ""
+        echo "*** Output of podman logs deb10"
+        podman logs deb10
+        echo ""
+        echo "*** Output of journalctl -r"
+        journalctl -r
         echo ""
         echo "*** Remove the container"
         podman rm deb10
