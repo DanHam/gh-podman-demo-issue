@@ -13,19 +13,6 @@ jobs:
     - name: Check out
       uses: actions/checkout@v2
 
-    - name: Run a container (successfully) with podman
-      run: podman run --log-level=debug -d --name nginx docker.io/nginx:alpine
-
-    - name: Show the container is running then stop and remove
-      run: |
-        echo ""
-        echo "*** Show the container is running"
-        podman ps -a
-        echo ""
-        echo "*** Stop and remove the running container"
-        podman stop nginx
-        podman rm nginx
-
     - name: Build our problematic container
       run: /bin/bash build.sh
 
