@@ -16,9 +16,6 @@ jobs:
     - name: Build our problematic container
       run: /bin/bash build.sh
 
-    - name: Ensure dbus-launch is available (install dbus-x11)
-      run: sudo apt install -y --no-install-recommends dbus-x11
-
     - name: Try and run our problematic container with podman
       run: podman --cgroup-manager=cgroupfs run --log-level=debug -d --name deb10 localhost/debian-10-systemd
 
