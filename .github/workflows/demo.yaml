@@ -33,12 +33,12 @@ jobs:
       run: sudo apt install -y --no-install-recommends dbus-x11
 
     - name: Try and run our problematic container with podman
-      run: podman run --log-level=debug --cgroup-manager=cgroupfs -d --name deb10 localhost/debian-10-systemd
+      run: podman --cgroup-manager=cgroupfs run --log-level=debug -d --name deb10 localhost/debian-10-systemd
 
-    - name: Show the container is not running then remove. Display debug info
+    - name: Get debug information about the problematic container and remove
       run: |
         echo ""
-        echo "*** Show the container is NOT running - output of podman ps"
+        echo "*** Output of podman ps"
         podman ps -a
         echo ""
         echo "*** Output of podman logs deb10"
