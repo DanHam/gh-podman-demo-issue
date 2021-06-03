@@ -50,22 +50,6 @@ jobs:
         sudo podman stop deb10
         sudo podman rm deb10
 
-    - name: Demonstrate the problematic container runs using docker
-      run: |
-        echo ""
-        echo "*** Exporting container image to Docker"
-        podman push localhost/debian-10-systemd:latest docker-daemon:localhost/debian-10-systemd:latest
-        echo ""
-        echo "*** Running the container with Docker"
-        docker run -d --name deb10 localhost/debian-10-systemd
-        echo ""
-        echo "*** Show the container is running with Docker"
-        docker ps -a
-        echo ""
-        echo "*** Stop and remove the running container"
-        docker stop deb10
-        docker rm deb10
-
     - name: Output debug info
       run: |
         echo ""
