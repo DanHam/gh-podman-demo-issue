@@ -38,9 +38,10 @@ jobs:
         podman logs deb10
         echo ""
         echo "*** Output of journalctl -r"
-        journalctl -r
+        journalctl -r -n 100
         echo ""
-        echo "*** Remove the container"
+        echo "*** Stop and remove the container"
+        podman stop deb10
         podman rm deb10
 
     - name: Output debug info
