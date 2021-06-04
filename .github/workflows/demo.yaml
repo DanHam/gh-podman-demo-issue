@@ -34,22 +34,6 @@ jobs:
         echo "*** Remove the container"
         podman rm deb10
 
-    - name: Show we can run the container using 'sudo podman'
-      run: |
-        echo ""
-        echo "*** Build the image using 'sudo buildah'"
-        sudo /bin/bash build.sh
-        echo ""
-        echo "*** Run the container"
-        sudo podman run --log-level=debug -d --name deb10 localhost/debian-10-systemd
-        echo ""
-        echo "*** Show the container is running"
-        sudo podman ps -a
-        echo ""
-        echo "*** Stop and remove the running container"
-        sudo podman stop deb10
-        sudo podman rm deb10
-
     - name: Output debug info
       run: |
         echo ""
