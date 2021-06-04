@@ -16,6 +16,15 @@ jobs:
     - name: Build our problematic container
       run: /bin/bash build.sh
 
+    - name: Debug - Show ownership on the cgroup pre change
+      run: ls -ld /sys/fs/cgroup/systemd/system.slice/runner-provisioner.service
+
+    - name: Change ownership on the cgroup
+      run: sudo chown -R $(id -un):$(id -gn) /sys/fs/cgroup/systemd/system.slice/runner-provisioner.service
+
+    - name: Debug - Show ownership on the cgroup post change
+      run: ls -ld /sys/fs/cgroup/systemd/system.slice/runner-provisioner.service
+
     - name: Try and run our problematic container with podman
       run: podman run --log-level=debug -d --name deb10 localhost/debian-10-systemd --log-level=debug
 
